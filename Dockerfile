@@ -1,18 +1,21 @@
 FROM sameersbn/ubuntu:14.04.20160321
 MAINTAINER sameer@damagehead.com
 
-ENV OPENFIRE_VERSION=3.10.3 \
+ENV OPENFIRE_VERSION=4.0.2 \
     OPENFIRE_USER=openfire \
     OPENFIRE_DATA_DIR=/var/lib/openfire \
     OPENFIRE_LOG_DIR=/var/log/openfire
 
-RUN apt-get update \
- && DEBIAN_FRONTEND=noninteractive apt-get install -y openjdk-7-jre \
- && wget "http://download.igniterealtime.org/openfire/openfire_${OPENFIRE_VERSION}_all.deb" -O /tmp/openfire_${OPENFIRE_VERSION}_all.deb \
- && dpkg -i /tmp/openfire_${OPENFIRE_VERSION}_all.deb \
- && mv /var/lib/openfire/plugins/admin /usr/share/openfire/plugin-admin \
- && rm -rf openfire_${OPENFIRE_VERSION}_all.deb \
- && rm -rf /var/lib/apt/lists/*
+
+RUN \
+	echo "deb http://ftp.debian.org/debian testing main" >>  /etc/apt/sources.list \
+	&& apt-get update \
+ 	&& DEBIAN_FRONTEND=noninteractive apt-get install --force-yes openjdk-8-jre \
+ 	&& wget "http://igniterealtime.org/downloads/download-landing.jsp?file=openfire/openfire_${OPENFIRE_VERSION}_all.deb_all.deb" -O /tmp/openfire_${OPENFIRE_VERSION}_all.deb \
+ 	&& dpkg -i /tmp/openfire_${OPENFIRE_VERSION}_all.deb \
+ 	&& mv /var/lib/openfire/plugins/admin /usr/share/openfire/plugin-admin \
+ 	&& rm -rf openfire_${OPENFIRE_VERSION}_all.deb \
+ 	&& rm -rf /var/lib/apt/lists/*
 
 COPY entrypoint.sh /sbin/entrypoint.sh
 RUN chmod 755 /sbin/entrypoint.sh
