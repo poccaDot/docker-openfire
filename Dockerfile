@@ -11,6 +11,7 @@ RUN \
 	echo "deb http://ftp.debian.org/debian testing main" >>  /etc/apt/sources.list \
 	&& apt-get update \
  	&& DEBIAN_FRONTEND=noninteractive apt-get install --force-yes -y openjdk-7-jre \
+ 	&& DEBIAN_FRONTEND=noninteractive apt-get install --force-yes -y openjdk-8-jre \
 	&& wget "http://download.igniterealtime.org/openfire/openfire_${OPENFIRE_VERSION}_all.deb" -O /tmp/openfire_${OPENFIRE_VERSION}_all.deb \
  	&& dpkg -i /tmp/openfire_${OPENFIRE_VERSION}_all.deb \
  	&& mv /var/lib/openfire/plugins/admin /usr/share/openfire/plugin-admin \
